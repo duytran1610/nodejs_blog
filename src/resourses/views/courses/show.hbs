@@ -1,0 +1,29 @@
+{{#if course}}
+<form class="mt-4" method="post" action="https://www.youtube.com/embed/{{course.videoID}}">
+    <div class="row">
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-primary">Start Study</button>
+        </div>
+
+        <div class="col-lg-9">
+            <h2>{{course.name}}</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{course.videoID}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <p>{{course.description}}</p>
+        </div>
+    </div>
+</form>
+{{else}}
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Result search</h5>
+        </div>
+        <div class="modal-body">
+            <p>The course name is incorrect or the course does not exist!</p>
+        </div>
+        <div class="modal-footer">
+            <a href="/search" class="btn btn-danger" data-dismiss="modal">Close</a>
+        </div>
+    </div>
+</div>
+{{/if}}

@@ -1,0 +1,158 @@
+<form class="mt-4" name="form-container" method="post" action="/courses/handle-form-actions">
+    <div>
+        <a href="/me/stored/courses">List courses</a>
+        <h3>COURSES DELETED</h3>
+
+        <div class="mt-4 d-flex align-items-center">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                <label class="form-check-label" for="checkbox-all">
+                    Choose all
+                </label>
+            </div>
+
+            <select class="form-control form-control-sm checkbox-select-all-options" name="action" required>      {{!required: attribute}}
+                <option value="">----- Action -----</option>
+                <option value="destroy">Delete</option>
+                <option value="restore">Restore</option>
+            </select>
+
+            <button class="btn btn-submit-done btn-primary btn-sm" disabled>Done</button>                          {{!disabled: attribute}}
+        </div>
+    </div>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">#</th>
+                <th scope="col">
+                    Name Course
+                    {{sortable 'name' _sort}}
+                </th>
+                <th scope="col">
+                    Level
+                    {{sortable 'level' _sort}}
+                </th>
+                <th scope="col">
+                    Time Delete
+                    {{sortable 'deletedAt' _sort}}
+                </th>
+                <th scope="col" colspan="2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each courses}}
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this.id}}">
+                    </div>
+                </td>
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.level}}</td>
+                <td>{{this.deletedAt}}</td>
+                <td>
+                    <a href="" class="btn btn-link btn-restore" data-id="{{this.id}}">Restore</a>
+                </td>
+                <td>
+                    <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this.id}}" data-target="#delete-course-modal">Delete</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6" class="text-center">
+                    Empty recycle bin!
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+
+{{!-- Confirm delete --}}
+<!-- Modal -->
+<div class="modal fade" id="delete-course-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete-modal-label">Delete course</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This action is irreversible! Are you sure you want to delete this course?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="btn-delete-course" type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Form restore hiden --}}
+<form name="form-restore-course" method="post"></form>
+{{!-- Form delete hiden --}}
+<form name="form-delete-course" method="post"></form>
+
+<script>
+    // At the time of using '$' the jQuery library was not imported, resulting in '$' undefined
+    // -> Create event DOMContentLoaded, so that when jQuery library is imported will run the action in this event
+    document.addEventListener('DOMContentLoaded', function(){
+        let courseId;
+        let btnRestores = $('.btn-restore');
+        let btnDeleteCourse = document.getElementById('btn-delete-course');
+        let formRestoreCourse = document.forms['form-restore-course'];
+        let formDeleteCourse = document.forms['form-delete-course'];
+        let checkboxAll = $('#checkbox-all');
+        let courseItemCheckbox = $('input[name="courseIds[]"]');
+        let btnDone = $('.btn-submit-done');
+
+        // receive id of course (only for btnDeleteCourse in delete-course-modal)
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            courseId = button.data('id'); // Extract info from data-* attributes
+        })
+
+        // Action clicked btn delete
+        btnDeleteCourse.onclick = function() {
+            formDeleteCourse.setAttribute('action', `/courses/${courseId}/force?_method=DELETE`);
+            formDeleteCourse.submit();
+        }
+
+        // Action clicked btn restore
+        btnRestores.click(function(e) {
+            e.preventDefault();
+
+            let restoreCourseId = $(this).data('id');
+            formRestoreCourse.setAttribute('action', `/courses/${restoreCourseId}/restore?_method=PATCH`);
+            formRestoreCourse.submit();
+        });
+
+        // Checkbox all changed
+        checkboxAll.change(function(){
+            let isCheckedAll = $(this).prop('checked');
+            courseItemCheckbox.prop('checked', isCheckedAll);
+            renderBtnDone();
+        })
+
+        // Course item checkbox changed
+        courseItemCheckbox.change(function(){
+            let isCheckedAll = courseItemCheckbox.length === $('input[name="courseIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            renderBtnDone();
+        })
+
+        // Render button 'Done'
+        function renderBtnDone(){
+            let countChecked = $('input[name="courseIds[]"]:checked').length;
+            if (countChecked)
+                btnDone.attr('disabled', false);
+            else
+                btnDone.attr('disabled', true);
+        }
+    });
+</script>

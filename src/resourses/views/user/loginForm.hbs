@@ -1,0 +1,29 @@
+<!-- Modal Login -->
+<div id="login-modal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content" name="login-form" method="post" action="/user/loginForm/login">
+      <div class="modal-header">
+        <h4 class="modal-title" id="login-modal-label">LOGIN</h4>
+        <a href="/user/signupForm" class="navbar-brand">
+            <h5>Signup</h5>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="login-account">Account</label>
+          <input type="text" class="form-control" id="login-account" name="account" placeholder="Enter email or phone">
+          <small class="form-text text-muted">We'll never share your information with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" class="form-control" id="login-password" name="password" placeholder="Password">
+        </div>
+        {{tellErrol errol.login}}
+      </div>
+      <div class="modal-footer">
+        <a href="/" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
+    </form>
+  </div>
+</div>

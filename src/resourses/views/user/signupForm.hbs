@@ -1,0 +1,39 @@
+<!-- Modal Signup -->
+<div id="signup-modal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form class="modal-content" name="signup-form" method="post" action="/user/signupForm/signup">
+      <div class="modal-header">
+        <h4 class="modal-title" id="signup-modal-label">SIGNUP</h4>
+        <a href="/user/loginForm" class="navbar-brand">
+            <h5>Login</h5>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="signup-name-user">Name user</label>
+          <input type="text" class="form-control" id="signup-name-user" name="user_name" value="{{userErrol.user_name}}" placeholder="Enter your name">
+          {{tellErrol errol.name}}
+        </div>
+        <div class="form-group">
+          <label for="signup-account">Account</label>
+          <input type="text" class="form-control" id="signup-account" name="account" value="{{userErrol.account}}" placeholder="Enter email or phone">
+          {{tellErrol errol.account}}
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" class="form-control" id="signup-password" name="password" value="{{userErrol.password}}" placeholder="Password">
+          {{tellErrol errol.password}}
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm password</label>
+          <input type="password" class="form-control" id="confirm-password" name="confirm_password" value="{{userErrol.confirm_password}}" placeholder="Confirm password">
+          {{tellErrol errol.confirm}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/" class="btn btn-secondary" data-dismiss="modal">Cancel</a>
+        <button type="submit" class="btn btn-primary">Signup</button>
+      </div>
+    </form>
+  </div>
+</div>

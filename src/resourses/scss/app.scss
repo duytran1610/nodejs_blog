@@ -1,0 +1,31 @@
+@import 'variables';
+
+.card-course-item {
+    margin-top: 16px;
+}
+
+.show-1-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+
+.show-5-line {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.checkbox-select-all-options {
+    width: 150px;
+    margin: 0 16px;
+}
